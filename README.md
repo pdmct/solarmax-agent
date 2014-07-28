@@ -1,0 +1,2 @@
+solarmax-agent
+==============
