@@ -108,9 +108,8 @@ def connect_to_inverter():
         sys.exit();
     return s
 
-def read_data(request):
-    inv_s = connect_to_inverter()
-    inv_s.send(request)
+def read_data(sock, request):
+    sock.send(request)
     data_received = False
     response = ""
     while not data_received:
@@ -125,15 +124,21 @@ def read_data(request):
 
 
 def main():
+    print "starting..."
+    inv_s = connect_to_inverter()
+    print "connected..."
     try:
         while True:
-            data = read_data(req_data)
+            data = read_data(inv_s,req_data)
             publish_data(data)
             time.sleep(10)
     except Exception as ex:
         template = "An exception of type {0} occured. Arguments:\n{1!r}"
         message = template.format(type(ex).__name__, ex.args)
         print message
+    finally:
+        inv_s.close()
+
 
 
 
