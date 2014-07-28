@@ -113,7 +113,7 @@ def read_data(sock, request):
     data_received = False
     response = ""
     while not data_received:
-        buf = inv_s.recv(1024)
+        buf = sock.recv(1024)
         if len(buf) > 0:
             response = response + buf
             data_received = True
