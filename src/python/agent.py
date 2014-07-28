@@ -11,8 +11,8 @@ import time
 inverter_ip = "192.168.1.90"
 inverter_port = 12345
 
-mqtt_broker_ip = "127.0.0.1"
-mqtt_broker_port = 1880
+mqtt_broker_ip = "192.168.1.24"
+mqtt_broker_port = 1883
 mqtt_broker_url = "http://" + mqtt_broker_ip + ":" + str(mqtt_broker_port)
 
 mqtt_topic = "/data/inverter"
@@ -45,23 +45,17 @@ field_map = {
 req_data = "{FB;01;3E|64:IDC;UL1;TKK;IL1;SYS;TNF;UDC;PAC;PRL;KT0;SYS|0F66}"
 
 
-def connect_to_broker():
-    """ connect to the mqtt broker """
-    return
-
-def close_connection():
-    """ close the connection to the broker """
-
-    return
-
 def publish_message(topic, payload):
     """ publish the message to the mqtt broker
     --- accepts a JSON payload
     --- publishs to the """
+    mqtt.single(topic, payload, 0,hostname=mqtt_broker_ip)
     return
 
 def genData(s):
-    """ takes a paid <field>=<0xdata> and converts to a list with the name mapped using field_map and value converted to base 10 """
+    """ takes a pair: <field>=<0xdata> and converts to a list
+    with the name mapped using field_map and value converted to base 10 and appropriately scaled """
+
     t = s.split('=')
     f = t[0]
 
@@ -129,9 +123,8 @@ def read_data(request):
     return response
 
 
+
 def main():
-    connect_to_broker()
-    print 'connected to broker...\n'
     try:
         while True:
             data = read_data(req_data)
@@ -141,7 +134,7 @@ def main():
         template = "An exception of type {0} occured. Arguments:\n{1!r}"
         message = template.format(type(ex).__name__, ex.args)
         print message
-        close_connection()
+
 
 
 main()
