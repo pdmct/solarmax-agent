@@ -1,4 +1,5 @@
 import paho.mqtt.client as mqtt
+import paho.mqtt.publish as publish
 import socket
 import sys
 import time
@@ -49,7 +50,7 @@ def publish_message(topic, payload):
     """ publish the message to the mqtt broker
     --- accepts a JSON payload
     --- publishs to the """
-    mqtt.single(topic, payload, 0,hostname=mqtt_broker_ip)
+    publish.single(topic, payload, 0,hostname=mqtt_broker_ip)
     return
 
 def genData(s):
