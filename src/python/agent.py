@@ -1,4 +1,4 @@
-import paho.mqtt.client as mqtt
+import paho.mqtt as mqtt
 import paho.mqtt.publish as publish
 import socket
 import sys
@@ -18,6 +18,8 @@ mqtt_broker_url = "http://" + mqtt_broker_ip + ":" + str(mqtt_broker_port)
 
 mqtt_topic = "/data/inverter"
 
+iot_broker = "k4cp0.messaging.internetoftings.ibmcloud.com"
+iot_port = 1883
 
 IDC = "IDC"   ## DC Current
 UL1 = "UL1"   ## Voltage Phase 1
@@ -50,7 +52,13 @@ def publish_message(topic, payload):
     """ publish the message to the mqtt broker
     --- accepts a JSON payload
     --- publishs to the """
-    publish.single(topic, payload, 0,hostname=mqtt_broker_ip)
+    ## following line is for local broker
+    #publish.single(topic, payload, 0,hostname=mqtt_broker_ip)
+    ## following line is for remote broker
+    publish.single(topic, payload, qos=0,retain=False,hostname=iot_broker,
+                   port=iot_port,client_id="d:k4cp0:raspberrypi:b827ebc2478d",
+                   keepalive=60, will=None, auth={'username':"use-token-auth", 'password':"Sz2(u_6!+h_MIe@&7Z"},
+                   tls=None, protocol=mqtt.MQTTv311)
     return
 
 def genData(s):
