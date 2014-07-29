@@ -57,16 +57,22 @@ def publish_message(topic, payload):
     #publish.single(topic, payload, 0,hostname=mqtt_broker_ip)
 
     ## following line is for remote broker
-    publish.single(topic,
-                   payload,
-                   hostname=iot_broker,
-                   port=iot_port,
-                   client_id="d:k4cp0:raspberrypi:b827ebc2478d",
-                   keepalive=60,
-                   will=None,
-                   auth={'username':"use-token-auth", 'password':"Sz2(u_6!+h_MIe@&7Z"},
-                   tls=None,
-                   protocol=mqtt.MQTTv31)
+    try:
+        publish.single(topic,
+                       payload,
+                       hostname=iot_broker,
+                       port=iot_port,
+                       client_id="d:k4cp0:raspberrypi:b827ebc2478d",
+                       keepalive=60,
+                       will=None,
+                       auth={'username':"use-token-auth", 'password':"Sz2(u_6!+h_MIe@&7Z"},
+                       tls=None,
+                       protocol=mqtt.MQTTv31)
+    except Exception as ex:
+        template = "Publish.single: An exception of type {0} occured. Arguments:\n{1!r}"
+        message = template.format(type(ex).__name__, ex.args)
+        print message
+        raise ex
     return
 
 def genData(s):
