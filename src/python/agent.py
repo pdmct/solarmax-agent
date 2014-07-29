@@ -16,7 +16,7 @@ mqtt_broker_ip = "192.168.1.24"
 mqtt_broker_port = 1883
 mqtt_broker_url = "http://" + mqtt_broker_ip + ":" + str(mqtt_broker_port)
 
-mqtt_topic = "/data/inverter"
+mqtt_topic = "iot-2/evt/status/fmt/json"
 
 iot_broker = "k4cp0.messaging.internetofthings.ibmcloud.com"
 iot_port = 1883
@@ -54,6 +54,7 @@ def publish_message(topic, payload):
     --- publishs to the """
     ## following line is for local broker
     #publish.single(topic, payload, 0,hostname=mqtt_broker_ip)
+
     ## following line is for remote broker
     publish.single(topic, payload, qos=0,retain=False,hostname=iot_broker,
                    port=iot_port,client_id="d:k4cp0:raspberrypi:b827ebc2478d",
