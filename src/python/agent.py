@@ -18,7 +18,7 @@ mqtt_broker_url = "http://" + mqtt_broker_ip + ":" + str(mqtt_broker_port)
 
 mqtt_topic = "/data/inverter"
 
-iot_broker = "k4cp0.messaging.internetoftings.ibmcloud.com"
+iot_broker = "k4cp0.messaging.internetofthings.ibmcloud.com"
 iot_port = 1883
 
 IDC = "IDC"   ## DC Current
