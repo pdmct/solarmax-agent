@@ -83,10 +83,10 @@ def convert_to_json (data):
     """
     ## pull out the data elements into a list  and replace the code with the json field name
     ev = [genData(s) for s in  data[data.find(':')+1:data.find('|',data.find(':'))].split(';')]
-    outStr = '{'
+    outStr = '{ "d": { '  ## format to satisfy ibm iot conventions
     for e in ev:
         outStr = outStr + '"' + str(e[0]) + '" : ' + str(e[1]) + ','
-    outStr = outStr[:len(outStr)-1] + '}'  # remove the trailing comma then close the braces
+    outStr = outStr[:len(outStr)-1] + '} }'  # remove the trailing comma then close the braces
     return outStr
 
 def check_msg(msg):
