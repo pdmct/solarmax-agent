@@ -16,10 +16,11 @@ mqtt_broker_ip = "192.168.1.24"
 mqtt_broker_port = 1883
 mqtt_broker_url = "http://" + mqtt_broker_ip + ":" + str(mqtt_broker_port)
 
-mqtt_topic = "iot-2/evt/status/fmt/json"
+mqtt_topic = "/data/inverter"
 
 iot_broker = "k4cp0.messaging.internetofthings.ibmcloud.com"
 iot_port = 1883
+iot_topic = "iot-2/evt/status/fmt/json"
 
 IDC = "IDC"   ## DC Current
 UL1 = "UL1"   ## Voltage Phase 1
@@ -56,10 +57,16 @@ def publish_message(topic, payload):
     #publish.single(topic, payload, 0,hostname=mqtt_broker_ip)
 
     ## following line is for remote broker
-    publish.single(topic, payload, qos=0,retain=False,hostname=iot_broker,
-                   port=iot_port,client_id="d:k4cp0:raspberrypi:b827ebc2478d",
-                   keepalive=60, will=None, auth={'username':"use-token-auth", 'password':"Sz2(u_6!+h_MIe@&7Z"},
-                   tls=None, protocol=mqtt.MQTTv311)
+    publish.single(topic,
+                   payload,
+                   hostname=iot_broker,
+                   port=iot_port,
+                   client_id="d:k4cp0:raspberrypi:b827ebc2478d",
+                   keepalive=60,
+                   will=None,
+                   auth={'username':"use-token-auth", 'password':"Sz2(u_6!+h_MIe@&7Z"},
+                   tls=None,
+                   protocol=mqtt.MQTTv31)
     return
 
 def genData(s):
@@ -106,7 +113,7 @@ def publish_data (data):
     print 'publishing: ' + str(data) + '\n'
     json_data = convert_to_json(data)
     print 'published: ' + str(json_data) + '\n'
-    publish_message(mqtt_topic, json_data)
+    publish_message(iot_topic, json_data)
     return
 
 def connect_to_inverter():
