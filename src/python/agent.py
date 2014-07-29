@@ -1,4 +1,4 @@
-import paho.mqtt as mqtt
+import paho.mqtt.client as mqtt
 import paho.mqtt.publish as publish
 import socket
 import sys
